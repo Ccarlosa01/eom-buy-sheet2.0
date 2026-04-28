@@ -3,14 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <title>Sales Rep Portal</title>
-</head>
-<body>
-  <h1>Sales Rep Portal</h1>
-  <p id="welcome"></p>
 
-  <button onclick="logout()">Logout</button>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #1f2937;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    input[readonly] {
+      background: #e5e7eb;
+      color: #555;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 22px;
+      padding: 13px 18px;
+      background: #1f2937;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #111827;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .secondary:hover {
+      background: #d1d5db;
+    }
+
+    .suggestions {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      margin-top: 4px;
+      max-height: 220px;
+      overflow-y: auto;
+      display: none;
+      position: relative;
+      z-index: 10;
+    }
+
+    .suggestion {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+    }
+
+    .suggestion:hover {
+      background: #f3f4f6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .checkbox-row input {
+      width: auto;
+      margin: 0;
+    }
+
+    .message {
+      margin-top: 18px;
+      font-weight: bold;
+    }
+
+    .small {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Sales Rep Portal</h1>
+    <p id="welcome"></p>
+
+    <button class="secondary" onclick="logout()">Logout</button>
+
+    <form id="repForm">
+      <label>Search Product by Description</label>
+      <input type="text" id="descriptionSearch" autocomplete="off" placeholder="Start typing product description...">
+      <div id="suggestions" class="suggestions"></div>
+
+      <div class="grid">
+        <div>
+          <label>Item No.</label>
+          <input type="text" id="itemNo" readonly>
+        </div>
+
+        <div>
+          <label>Bottles Per Case</label>
+          <input type="number" id="bottlesPerCase" min="1" required>
+          <p class="small" id="bpcMessage"></p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label>Base Month</label>
+          <select id="baseMonth"></select>
+        </div>
+
+        <div>
+          <label>Base Year</label>
+          <input type="number" id="baseYear" readonly>
+        </div>
+      </div>
+
+      <h2>Pricing</h2>
+
+      <div class="grid">
+        <div>
+          <label id="priceLabel0">Current Month Price</label>
+          <input type="number" step="0.01" id="price0">
+        </div>
+
+        <div>
+          <label id="priceLabel1">30 Day Price</label>
+          <input type="number" step="0.01" id="price1">
+        </div>
+
+        <div>
+          <label id="priceLabel2">60 Day Price</label>
+          <input type="number" step="0.01" id="price2">
+        </div>
+
+        <div>
+          <label id="priceLabel3">90 Day Price</label>
+          <input type="number" step="0.01" id="price3">
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="permanentIncrease">
+        <label for="permanentIncrease" style="margin:0;">Permanent Price Increase</label>
+      </div>
+
+      <label>Notes</label>
+      <textarea id="notes" placeholder="Add any notes about the price change..."></textarea>
+
+      <button type="submit">Save Submission</button>
+
+      <div id="message" class="message"></div>
+    </form>
+  </div>
 
   <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynOIhsyWsCy_utk-_YxTG5jt-gHsYUy45ws_sWH5hcrbsFsZa5mCXstOnDgKs-aZ01_w/exec";
+
     const user = JSON.parse(localStorage.getItem("currentUser"));
 
     if (!user || String(user.role).toLowerCase() !== "sales rep") {
@@ -20,10 +216,301 @@
     document.getElementById("welcome").textContent =
       `Welcome, ${user.name}. Supplier: ${user.supplier}. Division: ${user.division}.`;
 
+    let inventory = [];
+    let selectedItem = null;
+
+    const monthNames = [
+      "", "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    window.addEventListener("load", async () => {
+      setupMonthDropdown();
+      updatePriceLabels();
+      await loadInventory();
+    });
+
     function logout() {
       localStorage.removeItem("currentUser");
       window.location.href = "index.html";
     }
+
+    function setupMonthDropdown() {
+      const baseMonth = document.getElementById("baseMonth");
+      const now = new Date();
+      const currentMonth = now.getMonth() + 1;
+      const currentYear = now.getFullYear();
+
+      document.getElementById("baseYear").value = currentYear;
+
+      for (let i = 1; i <= 12; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = monthNames[i];
+        if (i === currentMonth) option.selected = true;
+        baseMonth.appendChild(option);
+      }
+
+      baseMonth.addEventListener("change", async () => {
+        updatePriceLabels();
+
+        if (selectedItem) {
+          await loadCarryForwardPrices();
+        }
+      });
+    }
+
+    function buildMonthWindow() {
+      const baseMonth = Number(document.getElementById("baseMonth").value);
+      const baseYear = Number(document.getElementById("baseYear").value);
+
+      const result = [];
+
+      for (let i = 0; i < 4; i++) {
+        let month = baseMonth + i;
+        let year = baseYear;
+
+        while (month > 12) {
+          month -= 12;
+          year++;
+        }
+
+        result.push({ month, year });
+      }
+
+      return result;
+    }
+
+    function updatePriceLabels() {
+      const months = buildMonthWindow();
+
+      const types = ["Current Month", "30 Day", "60 Day", "90 Day"];
+
+      months.forEach((m, index) => {
+        document.getElementById(`priceLabel${index}`).textContent =
+          `${monthNames[m.month]} ${m.year} Price (${types[index]})`;
+      });
+    }
+
+    async function loadInventory() {
+      const message = document.getElementById("message");
+      message.textContent = "Loading inventory...";
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getInventory`);
+        const data = await res.json();
+
+        if (data.success) {
+          inventory = data.items || [];
+          message.textContent = `Inventory loaded. ${inventory.length} items available.`;
+        } else {
+          message.textContent = data.message || "Could not load inventory.";
+        }
+      } catch (err) {
+        message.textContent = "Inventory load error.";
+      }
+    }
+
+    const searchInput = document.getElementById("descriptionSearch");
+    const suggestionsBox = document.getElementById("suggestions");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      suggestionsBox.innerHTML = "";
+
+      if (query.length < 2) {
+        suggestionsBox.style.display = "none";
+        return;
+      }
+
+      const matches = inventory
+        .filter(item => item.description.toLowerCase().includes(query))
+        .slice(0, 25);
+
+      if (!matches.length) {
+        suggestionsBox.style.display = "none";
+        return;
+      }
+
+      matches.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "suggestion";
+        div.textContent = `${item.description} — ${item.itemNo}`;
+        div.onclick = () => selectItem(item);
+        suggestionsBox.appendChild(div);
+      });
+
+      suggestionsBox.style.display = "block";
+    });
+
+    async function selectItem(item) {
+      selectedItem = item;
+
+      document.getElementById("descriptionSearch").value = item.description;
+      document.getElementById("itemNo").value = item.itemNo;
+      suggestionsBox.style.display = "none";
+
+      clearPrices();
+
+      await loadBPC(item.itemNo);
+      await loadCarryForwardPrices();
+    }
+
+    async function loadBPC(itemNo) {
+      const bpcInput = document.getElementById("bottlesPerCase");
+      const bpcMessage = document.getElementById("bpcMessage");
+
+      bpcInput.value = "";
+      bpcMessage.textContent = "Checking bottles per case...";
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getBPC&itemNo=${encodeURIComponent(itemNo)}`);
+        const data = await res.json();
+
+        if (data.success && data.found) {
+          bpcInput.value = data.bottlesPerCase;
+          bpcMessage.textContent = "Bottles per case found and auto-filled.";
+        } else {
+          bpcMessage.textContent = "No BPC found. Please enter manually.";
+        }
+      } catch (err) {
+        bpcMessage.textContent = "Could not check BPC.";
+      }
+    }
+
+    async function loadCarryForwardPrices() {
+      if (!selectedItem) return;
+
+      const username = encodeURIComponent(user.username);
+      const itemNo = encodeURIComponent(selectedItem.itemNo);
+      const baseMonth = document.getElementById("baseMonth").value;
+      const baseYear = document.getElementById("baseYear").value;
+
+      const message = document.getElementById("message");
+      message.textContent = "Checking previous pricing...";
+
+      try {
+        const res = await fetch(
+          `${SCRIPT_URL}?action=getCarryForwardPrices&username=${username}&itemNo=${itemNo}&baseMonth=${baseMonth}&baseYear=${baseYear}`
+        );
+
+        const data = await res.json();
+
+        if (!data.success) {
+          message.textContent = data.message || "Could not load previous prices.";
+          return;
+        }
+
+        const months = buildMonthWindow();
+
+        months.forEach((m, index) => {
+          const key = `${m.month}-${m.year}`;
+          const prior = data.prices[key];
+
+          if (prior && prior.price !== "") {
+            document.getElementById(`price${index}`).value = prior.price;
+          }
+        });
+
+        message.textContent = "Previous pricing loaded where available. All fields remain editable.";
+
+      } catch (err) {
+        message.textContent = "Previous pricing lookup error.";
+      }
+    }
+
+    function clearPrices() {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`price${i}`).value = "";
+      }
+      document.getElementById("permanentIncrease").checked = false;
+      document.getElementById("notes").value = "";
+    }
+
+    document.getElementById("repForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const message = document.getElementById("message");
+
+      if (!selectedItem) {
+        message.textContent = "Please select an item from the inventory search.";
+        return;
+      }
+
+      const bottlesPerCase = document.getElementById("bottlesPerCase").value.trim();
+
+      if (!bottlesPerCase) {
+        message.textContent = "Please enter bottles per case.";
+        return;
+      }
+
+      const months = buildMonthWindow();
+      const priceTypes = ["Current", "30 Day", "60 Day", "90 Day"];
+
+      const prices = months.map((m, index) => ({
+        priceMonth: m.month,
+        priceYear: m.year,
+        price: document.getElementById(`price${index}`).value.trim(),
+        priceType: priceTypes[index]
+      }));
+
+      const hasAtLeastOnePrice = prices.some(p => p.price !== "");
+
+      if (!hasAtLeastOnePrice) {
+        message.textContent = "Please enter at least one price.";
+        return;
+      }
+
+      const payload = {
+        action: "saveRepSubmission",
+        repName: user.name,
+        username: user.username,
+        supplier: user.supplier,
+        division: user.division,
+        itemNo: selectedItem.itemNo,
+        description: selectedItem.description,
+        bottlesPerCase,
+        baseMonth: Number(document.getElementById("baseMonth").value),
+        baseYear: Number(document.getElementById("baseYear").value),
+        permanentIncrease: document.getElementById("permanentIncrease").checked,
+        notes: document.getElementById("notes").value.trim(),
+        prices
+      };
+
+      message.textContent = "Saving submission...";
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          message.textContent = "Submission saved successfully.";
+
+          selectedItem = null;
+          document.getElementById("repForm").reset();
+          document.getElementById("baseYear").value = new Date().getFullYear();
+          setupMonthReset();
+          updatePriceLabels();
+
+        } else {
+          message.textContent = result.message || "Save failed.";
+        }
+
+      } catch (err) {
+        console.error(err);
+        message.textContent = "Submission error. Please try again.";
+      }
+    });
+
+    function setupMonthReset() {
+      const currentMonth = new Date().getMonth() + 1;
+      document.getElementById("baseMonth").value = currentMonth;
+    }
   </script>
+
 </body>
 </html>
