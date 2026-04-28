@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sales Rep Portal</title>
+</head>
+<body>
+  <h1>Sales Rep Portal</h1>
+  <p id="welcome"></p>
+
+  <button onclick="logout()">Logout</button>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user || String(user.role).toLowerCase() !== "sales rep") {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("welcome").textContent =
+      `Welcome, ${user.name}. Supplier: ${user.supplier}. Division: ${user.division}.`;
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
