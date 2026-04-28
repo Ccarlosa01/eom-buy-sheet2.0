@@ -4,104 +4,423 @@
 <head>
   <meta charset="UTF-8">
   <title>Sales Rep Portal</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: auto;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111827;
+      color: white;
+      padding: 22px 26px;
+      border-radius: 18px;
+      margin-bottom: 24px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .topbar p {
+      margin: 6px 0 0;
+      color: #d1d5db;
+    }
+
+    .logout {
+      background: white;
+      color: #111827;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 21px;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 15px;
+      background: white;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #111827;
+      box-shadow: 0 0 0 3px rgba(17,24,39,0.12);
+    }
+
+    input[readonly] {
+      background: #f3f4f6;
+      color: #6b7280;
+      cursor: not-allowed;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #111827;
+      color: white;
+    }
+
+    button:hover {
+      background: #374151;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .secondary:hover {
+      background: #d1d5db;
+    }
+
+    .success {
+      background: #065f46;
+    }
+
+    .success:hover {
+      background: #047857;
+    }
+
+    .danger {
+      background: #991b1b;
+      padding: 8px 11px;
+      font-size: 13px;
+    }
+
+    .danger:hover {
+      background: #7f1d1d;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .suggestions {
+      display: none;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 12px;
+      margin-top: 6px;
+      max-height: 240px;
+      overflow-y: auto;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    }
+
+    .suggestion {
+      padding: 12px;
+      border-bottom: 1px solid #f3f4f6;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .suggestion:hover {
+      background: #f9fafb;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .checkbox-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 13px;
+      border-radius: 12px;
+    }
+
+    .checkbox-card input {
+      width: auto;
+    }
+
+    .checkbox-card label {
+      margin: 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .message {
+      margin-top: 16px;
+      font-weight: 700;
+      color: #111827;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .summary-box {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .pill {
+      background: #f3f4f6;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .pill strong {
+      display: block;
+      font-size: 20px;
+      margin-top: 4px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      margin-top: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      background: white;
+    }
+
+    th {
+      background: #f9fafb;
+      text-align: left;
+      font-size: 13px;
+      color: #374151;
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    .empty {
+      text-align: center;
+      color: #6b7280;
+      padding: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Sales Rep Portal</h1>
-  <p id="welcome"></p>
+  <div class="page">
 
-  <button onclick="logout()">Logout</button>
+    <div class="topbar">
+      <div>
+        <h1>Sales Rep Portal</h1>
+        <p id="welcome"></p>
+      </div>
 
-  <hr>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
 
-  <h2>Add Product Pricing</h2>
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2>Add Product Pricing</h2>
+          <p class="muted">Search inventory, enter pricing, then add each product to the current submission.</p>
 
-  <label>Search Product by Description</label><br>
-  <input type="text" id="descriptionSearch" placeholder="Start typing description..." autocomplete="off">
-  <div id="suggestions"></div>
+          <label>Search Product by Description</label>
+          <input type="text" id="descriptionSearch" placeholder="Start typing product description..." autocomplete="off">
+          <div id="suggestions" class="suggestions"></div>
 
-  <br><br>
+          <div class="row">
+            <div>
+              <label>Item No.</label>
+              <input type="text" id="itemNo" readonly>
+            </div>
 
-  <label>Item No.</label><br>
-  <input type="text" id="itemNo" readonly style="background:#e5e7eb;">
+            <div>
+              <label>Bottles Per Case</label>
+              <input type="number" id="bottlesPerCase" min="1">
+              <p class="muted" id="bpcMessage"></p>
+            </div>
+          </div>
 
-  <br><br>
+          <div class="row">
+            <div>
+              <label>Base Month</label>
+              <input type="text" id="baseMonthDisplay" readonly>
+              <input type="hidden" id="baseMonth">
+            </div>
 
-  <label>Bottles Per Case</label><br>
-  <input type="number" id="bottlesPerCase" min="1">
-  <p id="bpcMessage"></p>
+            <div>
+              <label>Base Year</label>
+              <input type="number" id="baseYear" readonly>
+            </div>
+          </div>
 
-  <br>
+          <h2 style="margin-top:26px;">Pricing Window</h2>
 
-  <label>Base Month</label><br>
-  <input type="text" id="baseMonthDisplay" readonly style="background:#e5e7eb;">
-  <input type="hidden" id="baseMonth">
+          <div class="row">
+            <div>
+              <label id="priceLabel0">Current Month Price</label>
+              <input type="number" step="0.01" id="price0" placeholder="0.00">
+            </div>
 
-  <br><br>
+            <div>
+              <label id="priceLabel1">30 Day Price</label>
+              <input type="number" step="0.01" id="price1" placeholder="0.00">
+            </div>
 
-  <label>Base Year</label><br>
-  <input type="number" id="baseYear" readonly style="background:#e5e7eb;">
+            <div>
+              <label id="priceLabel2">60 Day Price</label>
+              <input type="number" step="0.01" id="price2" placeholder="0.00">
+            </div>
 
-  <br><br>
+            <div>
+              <label id="priceLabel3">90 Day Price</label>
+              <input type="number" step="0.01" id="price3" placeholder="0.00">
+            </div>
+          </div>
 
-  <h3>Pricing</h3>
+          <div class="checkbox-card">
+            <input type="checkbox" id="permanentIncrease">
+            <label for="permanentIncrease">Permanent Price Increase</label>
+          </div>
 
-  <label id="priceLabel0">Current Month Price</label><br>
-  <input type="number" step="0.01" id="price0">
+          <label>Notes</label>
+          <textarea id="notes" placeholder="Add notes about the price change, deal timing, or account context..."></textarea>
 
-  <br><br>
+          <div class="actions">
+            <button type="button" onclick="addProductToSubmission()">Add Product to Submission</button>
+            <button type="button" class="secondary" onclick="clearProductForm()">Clear Product</button>
+          </div>
 
-  <label id="priceLabel1">30 Day Price</label><br>
-  <input type="number" step="0.01" id="price1">
+          <p id="message" class="message">Loading portal...</p>
+        </div>
+      </div>
 
-  <br><br>
+      <div>
+        <div class="card">
+          <h2>Current Submission</h2>
+          <p class="muted">Products added here will be submitted together in one batch.</p>
 
-  <label id="priceLabel2">60 Day Price</label><br>
-  <input type="number" step="0.01" id="price2">
+          <div class="summary-box">
+            <div class="pill">
+              Products
+              <strong id="productCount">0</strong>
+            </div>
+            <div class="pill">
+              Month
+              <strong id="submissionMonth">—</strong>
+            </div>
+          </div>
 
-  <br><br>
+          <div class="actions">
+            <button type="button" class="success" onclick="submitAllProducts()">Submit All Products</button>
+          </div>
 
-  <label id="priceLabel3">90 Day Price</label><br>
-  <input type="number" step="0.01" id="price3">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item No.</th>
+                  <th>Description</th>
+                  <th>BPC</th>
+                  <th>Permanent</th>
+                  <th>Notes</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              <tbody id="submissionBody">
+                <tr>
+                  <td colspan="6" class="empty">No products added yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <br><br>
-
-  <label>
-    <input type="checkbox" id="permanentIncrease">
-    Permanent Price Increase
-  </label>
-
-  <br><br>
-
-  <label>Notes</label><br>
-  <textarea id="notes" rows="4" placeholder="Enter notes..."></textarea>
-
-  <br><br>
-
-  <button type="button" onclick="addProductToSubmission()">Add Product to Submission</button>
-
-  <hr>
-
-  <h2>Current Submission</h2>
-
-  <table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th>Item No.</th>
-        <th>Description</th>
-        <th>BPC</th>
-        <th>Permanent Increase</th>
-        <th>Notes</th>
-        <th>Remove</th>
-      </tr>
-    </thead>
-    <tbody id="submissionBody"></tbody>
-  </table>
-
-  <br>
-
-  <button type="button" onclick="submitAllProducts()">Submit All Products</button>
-
-  <p id="message"></p>
+  </div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuPzfFEz3yCMqPXlY14gANA0D3R2l4ys3gR2blZFZuXo5N3YQ6O3bBAaLJM5h-NeNg4w/exec";
@@ -138,6 +457,7 @@
     window.addEventListener("load", async () => {
       setupLockedBaseMonth();
       updatePriceLabels();
+      updateSubmissionSummary();
       await loadInventory();
     });
 
@@ -154,6 +474,8 @@
       document.getElementById("baseMonth").value = currentMonth;
       document.getElementById("baseMonthDisplay").value = monthNames[currentMonth];
       document.getElementById("baseYear").value = currentYear;
+      document.getElementById("submissionMonth").textContent =
+        `${monthNames[currentMonth]} ${currentYear}`;
     }
 
     function buildMonthWindow() {
@@ -229,21 +551,16 @@
 
       matches.forEach(item => {
         const div = document.createElement("div");
-        div.textContent = `${item.description} — ${item.itemNo}`;
-        div.style.padding = "8px";
-        div.style.cursor = "pointer";
-        div.style.borderBottom = "1px solid #ddd";
-
+        div.className = "suggestion";
+        div.innerHTML = `
+          <strong>${escapeHtml(item.description)}</strong><br>
+          <span class="muted">Item No. ${escapeHtml(item.itemNo)}</span>
+        `;
         div.onclick = () => selectItem(item);
-
         suggestionsBox.appendChild(div);
       });
 
       suggestionsBox.style.display = "block";
-      suggestionsBox.style.border = "1px solid #ccc";
-      suggestionsBox.style.maxHeight = "200px";
-      suggestionsBox.style.overflowY = "auto";
-      suggestionsBox.style.background = "white";
     });
 
     async function selectItem(item) {
@@ -272,7 +589,7 @@
 
         if (data.success && data.found) {
           bpcInput.value = data.bottlesPerCase;
-          bpcMessage.textContent = "Bottles per case found and auto-filled.";
+          bpcMessage.textContent = "BPC found and auto-filled.";
         } else {
           bpcMessage.textContent = "No BPC found. Please enter manually.";
         }
@@ -380,6 +697,16 @@
       const body = document.getElementById("submissionBody");
       body.innerHTML = "";
 
+      if (!submissionProducts.length) {
+        body.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty">No products added yet.</td>
+          </tr>
+        `;
+        updateSubmissionSummary();
+        return;
+      }
+
       submissionProducts.forEach((product, index) => {
         const tr = document.createElement("tr");
 
@@ -390,12 +717,18 @@
           <td>${product.permanentIncrease ? "Yes" : "No"}</td>
           <td>${escapeHtml(product.notes)}</td>
           <td>
-            <button type="button" onclick="removeProduct(${index})">Remove</button>
+            <button type="button" class="danger" onclick="removeProduct(${index})">Remove</button>
           </td>
         `;
 
         body.appendChild(tr);
       });
+
+      updateSubmissionSummary();
+    }
+
+    function updateSubmissionSummary() {
+      document.getElementById("productCount").textContent = submissionProducts.length;
     }
 
     function removeProduct(index) {
@@ -465,6 +798,7 @@
       document.getElementById("itemNo").value = "";
       document.getElementById("bottlesPerCase").value = "";
       document.getElementById("bpcMessage").textContent = "";
+      suggestionsBox.style.display = "none";
 
       clearPricesOnly();
     }
