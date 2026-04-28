@@ -3,14 +3,152 @@
 <head>
   <meta charset="UTF-8">
   <title>Manager Portal</title>
-</head>
-<body>
-  <h1>Manager Portal</h1>
-  <p id="welcome"></p>
 
-  <button onclick="logout()">Logout</button>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #1f2937;
+    }
+
+    .card {
+      margin-top: 24px;
+      padding: 22px;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      background: #fafafa;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    button {
+      padding: 12px 18px;
+      background: #1f2937;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+
+    button:hover {
+      background: #111827;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .secondary:hover {
+      background: #d1d5db;
+    }
+
+    .message {
+      margin-top: 16px;
+      font-weight: bold;
+    }
+
+    .preview {
+      margin-top: 18px;
+      max-height: 320px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background: #f3f4f6;
+      position: sticky;
+      top: 0;
+    }
+
+    .small {
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Manager Portal</h1>
+    <p id="welcome"></p>
+
+    <button class="secondary" onclick="logout()">Logout</button>
+
+    <div class="card">
+      <h2>Inventory Upload</h2>
+      <p class="small">
+        Upload the inventory Excel or CSV file. The system will only save Item No. and Description.
+      </p>
+
+      <label>Upload Inventory File</label>
+      <input type="file" id="inventoryFile" accept=".xls,.xlsx,.csv">
+
+      <button onclick="processInventoryFile()">Preview Inventory</button>
+      <button onclick="uploadInventory()">Upload to Google Sheets</button>
+
+      <div id="message" class="message"></div>
+
+      <div id="preview" class="preview" style="display:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>Item No.</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="previewBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
   <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTx-RrHHf2pRt95xG1DSwy14_M9ciUnIRiP1Id-ow9lC1wRslQaQvcCV-LfXV2zQbufw/exec";
+
     const user = JSON.parse(localStorage.getItem("currentUser"));
 
     if (!user || String(user.role).toLowerCase() !== "manager") {
@@ -20,10 +158,149 @@
     document.getElementById("welcome").textContent =
       `Welcome, ${user.name}.`;
 
+    let inventoryItems = [];
+
     function logout() {
       localStorage.removeItem("currentUser");
       window.location.href = "index.html";
     }
+
+    function processInventoryFile() {
+      const fileInput = document.getElementById("inventoryFile");
+      const file = fileInput.files[0];
+      const message = document.getElementById("message");
+
+      inventoryItems = [];
+
+      if (!file) {
+        message.textContent = "Please select a file first.";
+        return;
+      }
+
+      message.textContent = "Reading file...";
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+
+          const rows = XLSX.utils.sheet_to_json(worksheet, {
+            header: 1,
+            defval: ""
+          });
+
+          if (rows.length < 2) {
+            message.textContent = "File does not contain enough data.";
+            return;
+          }
+
+          const headers = rows[0].map(h => String(h).trim().toLowerCase());
+
+          const itemNoIndex = headers.indexOf("item no.");
+          const descriptionIndex = headers.indexOf("description");
+
+          if (itemNoIndex === -1 || descriptionIndex === -1) {
+            message.textContent = "Could not find Item No. and Description columns.";
+            return;
+          }
+
+          for (let i = 1; i < rows.length; i++) {
+            const itemNo = String(rows[i][itemNoIndex] || "").trim();
+            const description = String(rows[i][descriptionIndex] || "").trim();
+
+            if (itemNo && description) {
+              inventoryItems.push({
+                itemNo,
+                description
+              });
+            }
+          }
+
+          renderPreview();
+
+          message.textContent = `Preview ready. ${inventoryItems.length} inventory items found.`;
+
+        } catch (error) {
+          console.error(error);
+          message.textContent = "Error reading file.";
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+
+    function renderPreview() {
+      const preview = document.getElementById("preview");
+      const previewBody = document.getElementById("previewBody");
+
+      previewBody.innerHTML = "";
+
+      const sample = inventoryItems.slice(0, 100);
+
+      sample.forEach(item => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${escapeHtml(item.itemNo)}</td>
+          <td>${escapeHtml(item.description)}</td>
+        `;
+
+        previewBody.appendChild(tr);
+      });
+
+      preview.style.display = "block";
+    }
+
+    async function uploadInventory() {
+      const message = document.getElementById("message");
+
+      if (!inventoryItems.length) {
+        message.textContent = "Please preview a valid inventory file first.";
+        return;
+      }
+
+      message.textContent = "Uploading inventory to Google Sheets...";
+
+      const payload = {
+        action: "uploadInventory",
+        uploadedBy: user.username,
+        items: inventoryItems
+      };
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          message.textContent = `Inventory uploaded successfully. ${result.count} items saved.`;
+        } else {
+          message.textContent = result.message || "Upload failed.";
+        }
+
+      } catch (error) {
+        console.error(error);
+        message.textContent = "Upload error. Please try again.";
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
   </script>
+
 </body>
 </html>
