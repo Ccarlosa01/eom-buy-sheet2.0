@@ -15,20 +15,20 @@
     }
 
     .page {
-      max-width: 1400px;
+      max-width: 1450px;
       margin: auto;
       padding: 28px;
     }
 
     .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       background: #111827;
       color: white;
       padding: 22px 26px;
       border-radius: 18px;
       margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .topbar h1 {
@@ -41,47 +41,96 @@
       color: #d1d5db;
     }
 
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-
     .card {
       background: white;
       border-radius: 18px;
       padding: 24px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      margin-bottom: 24px;
     }
 
-    h2 {
-      margin-top: 0;
-      font-size: 21px;
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 18px 0;
     }
 
-    label {
-      display: block;
-      margin-top: 16px;
-      margin-bottom: 6px;
-      font-weight: 700;
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 15px;
       font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #111827;
+      color: white;
+    }
+
+    button:hover { background: #374151; }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .danger {
+      background: #991b1b;
+      font-size: 12px;
+      padding: 8px 10px;
+    }
+
+    .success {
+      background: #065f46;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .message {
+      margin-top: 14px;
+      font-weight: 700;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1250px;
+      background: white;
+    }
+
+    th {
+      background: #f9fafb;
+      text-align: left;
+      font-size: 13px;
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    td {
+      padding: 8px;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: top;
     }
 
     input, textarea {
       width: 100%;
-      padding: 12px 13px;
+      padding: 9px;
       border: 1px solid #d1d5db;
-      border-radius: 10px;
-      font-size: 15px;
-      background: white;
-    }
-
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: #111827;
-      box-shadow: 0 0 0 3px rgba(17,24,39,0.12);
+      border-radius: 8px;
+      font-size: 13px;
     }
 
     input[readonly] {
@@ -91,223 +140,49 @@
     }
 
     textarea {
-      min-height: 92px;
+      min-height: 42px;
       resize: vertical;
     }
 
-    button {
-      border: none;
-      border-radius: 10px;
-      padding: 11px 14px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      background: #111827;
-      color: white;
+    .checkbox-center {
+      text-align: center;
     }
 
-    button:hover {
-      background: #374151;
-    }
-
-    .logout {
-      background: white;
-      color: #111827;
-    }
-
-    .secondary {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .secondary:hover {
-      background: #d1d5db;
-    }
-
-    .success {
-      background: #065f46;
-    }
-
-    .success:hover {
-      background: #047857;
-    }
-
-    .danger {
-      background: #991b1b;
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-
-    .danger:hover {
-      background: #7f1d1d;
-    }
-
-    .edit {
-      background: #1d4ed8;
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-
-    .edit:hover {
-      background: #1e40af;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .checkbox-center input {
+      width: auto;
+      transform: scale(1.2);
+      margin-top: 8px;
     }
 
     .suggestions {
       display: none;
-      border: 1px solid #d1d5db;
+      position: absolute;
+      z-index: 20;
       background: white;
-      border-radius: 12px;
-      margin-top: 6px;
-      max-height: 240px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+      max-height: 220px;
       overflow-y: auto;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+      width: 360px;
     }
 
     .suggestion {
-      padding: 12px;
-      border-bottom: 1px solid #f3f4f6;
+      padding: 10px;
       cursor: pointer;
-      font-size: 14px;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 13px;
     }
 
     .suggestion:hover {
       background: #f9fafb;
     }
 
-    .muted {
-      color: #6b7280;
-      font-size: 14px;
-      margin-top: 6px;
-    }
-
-    .checkbox-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 18px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      padding: 13px;
-      border-radius: 12px;
-    }
-
-    .checkbox-card input {
-      width: auto;
-    }
-
-    .checkbox-card label {
-      margin: 0;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .message {
-      margin-top: 16px;
-      font-weight: 700;
-      color: #111827;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      padding: 12px;
-      border-radius: 12px;
-    }
-
-    .summary-box {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .pill {
-      background: #f3f4f6;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 14px;
-    }
-
-    .pill strong {
-      display: block;
-      font-size: 20px;
-      margin-top: 4px;
-    }
-
-    .table-wrap {
-      overflow-x: visible;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      margin-top: 14px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 0;
-      table-layout: fixed;
-      background: white;
-    }
-
-    th {
-      background: #f9fafb;
-      text-align: left;
-      font-size: 12px;
-      color: #374151;
-      padding: 9px;
-      border-bottom: 1px solid #e5e7eb;
-      word-wrap: break-word;
-    }
-
-    td {
-      padding: 9px;
-      border-bottom: 1px solid #f3f4f6;
-      font-size: 12px;
-      vertical-align: top;
-      word-wrap: break-word;
-    }
-
-    .empty {
-      text-align: center;
-      color: #6b7280;
-      padding: 30px;
-    }
-
-    .mini-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    @media (max-width: 1000px) {
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-
+    @media (max-width: 900px) {
       .topbar {
         flex-direction: column;
         align-items: flex-start;
-        gap: 14px;
-      }
-
-      .row {
-        grid-template-columns: 1fr;
-      }
-
-      .table-wrap {
-        overflow-x: auto;
-      }
-
-      table {
-        min-width: 900px;
+        gap: 12px;
       }
     }
   </style>
@@ -322,164 +197,44 @@
         <p id="welcome"></p>
       </div>
 
-      <button class="logout" onclick="logout()">Logout</button>
+      <button class="secondary" onclick="logout()">Logout</button>
     </div>
 
-    <div class="main-grid">
+    <div class="card">
+      <h2>Ups & Downs Product Cost Report</h2>
+      <p class="muted" id="monthInfo"></p>
 
-      <div>
-        <div class="card">
-          <h2>Add Product Pricing</h2>
-          <p class="muted">Search inventory, enter pricing, then add each product to the current submission.</p>
-
-          <label>Search Product by Description</label>
-          <input type="text" id="descriptionSearch" placeholder="Start typing product description..." autocomplete="off">
-          <div id="suggestions" class="suggestions"></div>
-
-          <div class="row">
-            <div>
-              <label>Item No.</label>
-              <input type="text" id="itemNo" readonly>
-            </div>
-
-            <div>
-              <label>Bottles Per Case</label>
-              <input type="number" id="bottlesPerCase" min="1">
-              <p class="muted" id="bpcMessage"></p>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label>Base Month</label>
-              <input type="text" id="baseMonthDisplay" readonly>
-              <input type="hidden" id="baseMonth">
-            </div>
-
-            <div>
-              <label>Base Year</label>
-              <input type="number" id="baseYear" readonly>
-            </div>
-          </div>
-
-          <h2 style="margin-top:26px;">Pricing Window</h2>
-
-          <div class="row">
-            <div>
-              <label id="priceLabel0">Current Month Price</label>
-              <input type="number" step="0.01" id="price0" placeholder="0.00">
-            </div>
-
-            <div>
-              <label id="priceLabel1">30 Day Price</label>
-              <input type="number" step="0.01" id="price1" placeholder="0.00">
-            </div>
-
-            <div>
-              <label id="priceLabel2">60 Day Price</label>
-              <input type="number" step="0.01" id="price2" placeholder="0.00">
-            </div>
-
-            <div>
-              <label id="priceLabel3">90 Day Price</label>
-              <input type="number" step="0.01" id="price3" placeholder="0.00">
-            </div>
-          </div>
-
-          <div class="checkbox-card">
-            <input type="checkbox" id="permanentIncrease">
-            <label for="permanentIncrease">Permanent Price Increase</label>
-          </div>
-
-          <label>Notes</label>
-          <textarea id="notes" placeholder="Add notes about the price change, deal timing, or account context..."></textarea>
-
-          <div class="actions">
-            <button type="button" onclick="addProductToSubmission()" id="addUpdateBtn">Add Product to Submission</button>
-            <button type="button" class="secondary" onclick="clearProductForm()">Clear Product</button>
-          </div>
-
-          <p id="message" class="message">Loading portal...</p>
-        </div>
+      <div class="actions">
+        <button type="button" onclick="addNewProductLine()">Add New Product Line</button>
+        <button type="button" class="success" onclick="submitAllProducts()">Submit All Products</button>
       </div>
 
-      <div>
-        <div class="card">
-          <h2>Current Submission</h2>
-          <p class="muted">Products added here will be submitted together in one batch. Use Edit to load any row back into the left form.</p>
-
-          <div class="summary-box">
-            <div class="pill">
-              Products
-              <strong id="productCount">0</strong>
-            </div>
-            <div class="pill">
-              Month
-              <strong id="submissionMonth">—</strong>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button type="button" class="success" onclick="submitAllProducts()">Submit All Products</button>
-            <button type="button" class="secondary" onclick="pullLatestSavedPricing()">Pull Latest Saved Pricing to Edit</button>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Item No.</th>
-                  <th>Description</th>
-                  <th>BPC</th>
-                  <th id="subHead0">Month</th>
-                  <th id="subHead1">Month + 1</th>
-                  <th id="subHead2">Month + 2</th>
-                  <th id="subHead3">Month + 3</th>
-                  <th>Permanent</th>
-                  <th>Notes</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="submissionBody">
-                <tr>
-                  <td colspan="10" class="empty">No products added yet.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>Latest Saved Pricing for This Month</h2>
-          <p class="muted">This shows your most recent saved pricing that affects the current reporting window.</p>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Item No.</th>
-                  <th>Description</th>
-                  <th>BPC</th>
-                  <th id="savedHead0">Current</th>
-                  <th id="savedHead1">30 Day</th>
-                  <th id="savedHead2">60 Day</th>
-                  <th id="savedHead3">90 Day</th>
-                  <th>Permanent</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody id="savedPricingBody">
-                <tr>
-                  <td colspan="9" class="empty">No saved pricing loaded yet.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:110px;">Item No.</th>
+              <th style="width:260px;">Description</th>
+              <th style="width:90px;">BPC</th>
+              <th id="monthHead0" style="width:120px;">Month</th>
+              <th id="monthHead1" style="width:120px;">Month + 1</th>
+              <th id="monthHead2" style="width:120px;">Month + 2</th>
+              <th id="monthHead3" style="width:120px;">Month + 3</th>
+              <th style="width:130px;">Permanent Price Increase</th>
+              <th style="width:220px;">Notes</th>
+              <th style="width:90px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="pricingBody"></tbody>
+        </table>
       </div>
 
+      <div id="message" class="message">Loading portal...</div>
     </div>
+
   </div>
+
+  <div id="suggestions" class="suggestions"></div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2RlItMOrAQbF1wEU9HMEGnl1OZ_Qrxe2fmfc0ne2TqezoFPXZ8k7-1yl0l1yC1VjyLw/exec";
@@ -494,34 +249,30 @@
       `Welcome, ${user.name}. Supplier: ${user.supplier}. Division: ${user.division}.`;
 
     let inventory = [];
-    let selectedItem = null;
-    let submissionProducts = [];
-    let latestSavedPricing = [];
-    let editingIndex = null;
+    let productRows = [];
+    let activeDescriptionIndex = null;
 
     const monthNames = [
       "",
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
     ];
 
+    const now = new Date();
+    const baseMonth = now.getMonth() + 1;
+    const baseYear = now.getFullYear();
+
     window.addEventListener("load", async () => {
-      setupLockedBaseMonth();
-      updatePriceLabels();
-      renderSubmissionTable();
-      updateSubmissionSummary();
+      setupMonthHeaders();
       await loadInventory();
       await loadLatestRepMonthData();
+
+      if (!productRows.length) {
+        addNewProductLine();
+      }
+
+      renderTable();
+      document.getElementById("message").textContent = "Portal ready.";
     });
 
     function logout() {
@@ -529,22 +280,7 @@
       window.location.href = "index.html";
     }
 
-    function setupLockedBaseMonth() {
-      const now = new Date();
-      const currentMonth = now.getMonth() + 1;
-      const currentYear = now.getFullYear();
-
-      document.getElementById("baseMonth").value = currentMonth;
-      document.getElementById("baseMonthDisplay").value = monthNames[currentMonth];
-      document.getElementById("baseYear").value = currentYear;
-      document.getElementById("submissionMonth").textContent =
-        `${monthNames[currentMonth]} ${currentYear}`;
-    }
-
     function buildMonthWindow() {
-      const baseMonth = Number(document.getElementById("baseMonth").value);
-      const baseYear = Number(document.getElementById("baseYear").value);
-
       const result = [];
 
       for (let i = 0; i < 4; i++) {
@@ -562,14 +298,16 @@
       return result;
     }
 
-    function updatePriceLabels() {
+    function setupMonthHeaders() {
       const months = buildMonthWindow();
-      const types = ["Current Month", "30 Day", "60 Day", "90 Day"];
 
       months.forEach((m, index) => {
-        document.getElementById(`priceLabel${index}`).textContent =
-          `${monthNames[m.month]} ${m.year} Price (${types[index]})`;
+        document.getElementById(`monthHead${index}`).textContent =
+          `${monthNames[m.month]} ${m.year}`;
       });
+
+      document.getElementById("monthInfo").textContent =
+        `Locked reporting window: ${monthNames[months[0].month]} ${months[0].year} through ${monthNames[months[3].month]} ${months[3].year}`;
     }
 
     async function loadInventory() {
@@ -582,7 +320,6 @@
 
         if (data.success) {
           inventory = data.items || [];
-          message.textContent = `Inventory loaded. ${inventory.length} items available.`;
         } else {
           message.textContent = data.message || "Could not load inventory.";
         }
@@ -591,24 +328,156 @@
       }
     }
 
-    const searchInput = document.getElementById("descriptionSearch");
-    const suggestionsBox = document.getElementById("suggestions");
+    async function loadLatestRepMonthData() {
+      const message = document.getElementById("message");
+      message.textContent = "Loading latest saved pricing...";
 
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.trim().toLowerCase();
-      suggestionsBox.innerHTML = "";
+      try {
+        const res = await fetch(
+          `${SCRIPT_URL}?action=getRepLatestMonthData&username=${encodeURIComponent(user.username)}&baseMonth=${baseMonth}&baseYear=${baseYear}`
+        );
+
+        const data = await res.json();
+
+        if (!data.success) {
+          message.textContent = data.message || "Could not load latest pricing.";
+          return;
+        }
+
+        productRows = (data.results || []).map(product => ({
+          itemNo: product.itemNo || "",
+          description: product.description || "",
+          bottlesPerCase: product.bpc || "",
+          prices: [
+            product.prices["Current"]?.price || "",
+            product.prices["30 Day"]?.price || "",
+            product.prices["60 Day"]?.price || "",
+            product.prices["90 Day"]?.price || ""
+          ],
+          permanentIncrease: String(product.permanentIncrease).toLowerCase() === "yes",
+          notes: product.notes || ""
+        }));
+
+      } catch (err) {
+        message.textContent = "Latest pricing load error.";
+      }
+    }
+
+    function addNewProductLine() {
+      productRows.push({
+        itemNo: "",
+        description: "",
+        bottlesPerCase: "",
+        prices: ["", "", "", ""],
+        permanentIncrease: false,
+        notes: ""
+      });
+
+      renderTable();
+    }
+
+    function renderTable() {
+      const body = document.getElementById("pricingBody");
+      body.innerHTML = "";
+
+      productRows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>
+            <input type="text" value="${escapeAttr(row.itemNo)}" readonly>
+          </td>
+
+          <td style="position:relative;">
+            <input
+              type="text"
+              value="${escapeAttr(row.description)}"
+              placeholder="Search description..."
+              oninput="handleDescriptionInput(${index}, this)"
+              onfocus="handleDescriptionInput(${index}, this)"
+            >
+          </td>
+
+          <td>
+            <input
+              type="number"
+              min="1"
+              value="${escapeAttr(row.bottlesPerCase)}"
+              onchange="updateCell(${index}, 'bottlesPerCase', this.value)"
+            >
+          </td>
+
+          <td>
+            <input type="number" step="0.01" value="${escapeAttr(row.prices[0])}" onchange="updatePrice(${index}, 0, this.value)">
+          </td>
+
+          <td>
+            <input type="number" step="0.01" value="${escapeAttr(row.prices[1])}" onchange="updatePrice(${index}, 1, this.value)">
+          </td>
+
+          <td>
+            <input type="number" step="0.01" value="${escapeAttr(row.prices[2])}" onchange="updatePrice(${index}, 2, this.value)">
+          </td>
+
+          <td>
+            <input type="number" step="0.01" value="${escapeAttr(row.prices[3])}" onchange="updatePrice(${index}, 3, this.value)">
+          </td>
+
+          <td class="checkbox-center">
+            <input
+              type="checkbox"
+              ${row.permanentIncrease ? "checked" : ""}
+              onchange="updateCell(${index}, 'permanentIncrease', this.checked)"
+            >
+          </td>
+
+          <td>
+            <textarea onchange="updateCell(${index}, 'notes', this.value)">${escapeHtml(row.notes)}</textarea>
+          </td>
+
+          <td>
+            <button type="button" class="danger" onclick="removeRow(${index})">Remove</button>
+          </td>
+        `;
+
+        body.appendChild(tr);
+      });
+    }
+
+    function updateCell(index, field, value) {
+      productRows[index][field] = value;
+    }
+
+    function updatePrice(index, priceIndex, value) {
+      productRows[index].prices[priceIndex] = value;
+    }
+
+    function removeRow(index) {
+      productRows.splice(index, 1);
+      renderTable();
+      document.getElementById("message").textContent = "Product row removed.";
+    }
+
+    function handleDescriptionInput(index, input) {
+      const query = input.value.trim().toLowerCase();
+
+      productRows[index].description = input.value;
+      activeDescriptionIndex = index;
+
+      const box = document.getElementById("suggestions");
+      box.innerHTML = "";
 
       if (query.length < 2) {
-        suggestionsBox.style.display = "none";
+        box.style.display = "none";
         return;
       }
 
       const matches = inventory
         .filter(item => item.description.toLowerCase().includes(query))
-        .slice(0, 25);
+        .slice(0, 20);
 
       if (!matches.length) {
-        suggestionsBox.style.display = "none";
+        box.style.display = "none";
         return;
       }
 
@@ -619,259 +488,101 @@
           <strong>${escapeHtml(item.description)}</strong><br>
           <span class="muted">Item No. ${escapeHtml(item.itemNo)}</span>
         `;
-        div.onclick = () => selectItem(item);
-        suggestionsBox.appendChild(div);
+        div.onclick = () => selectInventoryItem(index, item);
+        box.appendChild(div);
       });
 
-      suggestionsBox.style.display = "block";
-    });
-
-    async function selectItem(item) {
-      selectedItem = item;
-      editingIndex = findExistingSubmissionIndex(item.itemNo);
-
-      document.getElementById("descriptionSearch").value = item.description;
-      document.getElementById("itemNo").value = item.itemNo;
-      suggestionsBox.style.display = "none";
-
-      clearPricesOnly();
-
-      if (editingIndex >= 0) {
-        loadProductIntoForm(submissionProducts[editingIndex], editingIndex);
-        document.getElementById("message").textContent =
-          "This product is already in the current submission. It has been loaded for editing.";
-        return;
-      }
-
-      await loadBPC(item.itemNo);
-      await loadCarryForwardPrices();
-
-      document.getElementById("addUpdateBtn").textContent = "Add Product to Submission";
+      const rect = input.getBoundingClientRect();
+      box.style.left = `${rect.left + window.scrollX}px`;
+      box.style.top = `${rect.bottom + window.scrollY + 4}px`;
+      box.style.width = `${rect.width}px`;
+      box.style.display = "block";
     }
 
-    async function loadBPC(itemNo) {
-      const bpcInput = document.getElementById("bottlesPerCase");
-      const bpcMessage = document.getElementById("bpcMessage");
+    async function selectInventoryItem(index, item) {
+      productRows[index].itemNo = item.itemNo;
+      productRows[index].description = item.description;
 
-      bpcInput.value = "";
-      bpcMessage.textContent = "Checking bottles per case...";
+      document.getElementById("suggestions").style.display = "none";
 
+      await loadBPCForRow(index, item.itemNo);
+      await loadCarryForwardForRow(index, item.itemNo);
+
+      renderTable();
+      document.getElementById("message").textContent =
+        "Product selected. BPC and previous pricing loaded where available.";
+    }
+
+    async function loadBPCForRow(index, itemNo) {
       try {
         const res = await fetch(`${SCRIPT_URL}?action=getBPC&itemNo=${encodeURIComponent(itemNo)}`);
         const data = await res.json();
 
         if (data.success && data.found) {
-          bpcInput.value = data.bottlesPerCase;
-          bpcMessage.textContent = "BPC found and auto-filled.";
-        } else {
-          bpcMessage.textContent = "No BPC found. Please enter manually.";
+          productRows[index].bottlesPerCase = data.bottlesPerCase;
         }
       } catch (err) {
-        bpcMessage.textContent = "Could not check BPC.";
+        console.error(err);
       }
     }
 
-    async function loadCarryForwardPrices() {
-      if (!selectedItem) return;
-
-      const username = encodeURIComponent(user.username);
-      const itemNo = encodeURIComponent(selectedItem.itemNo);
-      const baseMonth = document.getElementById("baseMonth").value;
-      const baseYear = document.getElementById("baseYear").value;
-
-      const message = document.getElementById("message");
-      message.textContent = "Checking previous pricing...";
-
+    async function loadCarryForwardForRow(index, itemNo) {
       try {
         const res = await fetch(
-          `${SCRIPT_URL}?action=getCarryForwardPrices&username=${username}&itemNo=${itemNo}&baseMonth=${baseMonth}&baseYear=${baseYear}`
+          `${SCRIPT_URL}?action=getCarryForwardPrices&username=${encodeURIComponent(user.username)}&itemNo=${encodeURIComponent(itemNo)}&baseMonth=${baseMonth}&baseYear=${baseYear}`
         );
 
         const data = await res.json();
 
-        if (!data.success) {
-          message.textContent = data.message || "Could not load previous prices.";
-          return;
-        }
+        if (!data.success) return;
 
         const months = buildMonthWindow();
 
-        months.forEach((m, index) => {
+        months.forEach((m, priceIndex) => {
           const key = `${m.month}-${m.year}`;
           const prior = data.prices[key];
 
           if (prior && prior.price !== "") {
-            document.getElementById(`price${index}`).value = prior.price;
+            productRows[index].prices[priceIndex] = prior.price;
           }
         });
 
-        message.textContent = "Previous pricing loaded where available. All fields remain editable.";
       } catch (err) {
-        message.textContent = "Previous pricing lookup error.";
+        console.error(err);
       }
     }
 
-    function addProductToSubmission() {
+    async function submitAllProducts() {
       const message = document.getElementById("message");
 
-      if (!selectedItem) {
-        message.textContent = "Please select an item first.";
-        return;
-      }
+      const validRows = productRows.filter(row =>
+        row.itemNo &&
+        row.description &&
+        row.bottlesPerCase &&
+        row.prices.some(price => String(price).trim() !== "")
+      );
 
-      const bottlesPerCase = document.getElementById("bottlesPerCase").value.trim();
-
-      if (!bottlesPerCase) {
-        message.textContent = "Please enter bottles per case.";
+      if (!validRows.length) {
+        message.textContent = "Please enter at least one complete product line before submitting.";
         return;
       }
 
       const months = buildMonthWindow();
       const priceTypes = ["Current", "30 Day", "60 Day", "90 Day"];
 
-      const prices = months.map((m, index) => ({
-        priceMonth: m.month,
-        priceYear: m.year,
-        price: document.getElementById(`price${index}`).value.trim(),
-        priceType: priceTypes[index]
+      const products = validRows.map(row => ({
+        itemNo: row.itemNo,
+        description: row.description,
+        bottlesPerCase: row.bottlesPerCase,
+        permanentIncrease: row.permanentIncrease,
+        notes: row.notes,
+        prices: months.map((m, index) => ({
+          priceMonth: m.month,
+          priceYear: m.year,
+          priceType: priceTypes[index],
+          price: row.prices[index]
+        }))
       }));
-
-      if (!prices.some(p => p.price !== "")) {
-        message.textContent = "Please enter at least one price.";
-        return;
-      }
-
-      const productData = {
-        itemNo: selectedItem.itemNo,
-        description: selectedItem.description,
-        bottlesPerCase,
-        permanentIncrease: document.getElementById("permanentIncrease").checked,
-        notes: document.getElementById("notes").value.trim(),
-        prices
-      };
-
-      if (editingIndex !== null && editingIndex >= 0) {
-        submissionProducts[editingIndex] = productData;
-        message.textContent = "Product updated in current submission.";
-      } else {
-        const alreadyAddedIndex = findExistingSubmissionIndex(selectedItem.itemNo);
-
-        if (alreadyAddedIndex >= 0) {
-          submissionProducts[alreadyAddedIndex] = productData;
-          message.textContent = "Product already existed in this submission, so it was updated.";
-        } else {
-          submissionProducts.push(productData);
-          message.textContent = "Product added to current submission.";
-        }
-      }
-
-      renderSubmissionTable();
-      clearProductForm();
-    }
-
-    function renderSubmissionTable() {
-      const body = document.getElementById("submissionBody");
-      const months = buildMonthWindow();
-
-      document.getElementById("subHead0").textContent = `${monthNames[months[0].month]} ${months[0].year}`;
-      document.getElementById("subHead1").textContent = `${monthNames[months[1].month]} ${months[1].year}`;
-      document.getElementById("subHead2").textContent = `${monthNames[months[2].month]} ${months[2].year}`;
-      document.getElementById("subHead3").textContent = `${monthNames[months[3].month]} ${months[3].year}`;
-
-      body.innerHTML = "";
-
-      if (!submissionProducts.length) {
-        body.innerHTML = `
-          <tr>
-            <td colspan="10" class="empty">No products added yet.</td>
-          </tr>
-        `;
-        updateSubmissionSummary();
-        return;
-      }
-
-      submissionProducts.forEach((product, index) => {
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-          <td>${escapeHtml(product.itemNo)}</td>
-          <td>${escapeHtml(product.description)}</td>
-          <td>${escapeHtml(product.bottlesPerCase)}</td>
-          <td>${money(product.prices[0]?.price)}</td>
-          <td>${money(product.prices[1]?.price)}</td>
-          <td>${money(product.prices[2]?.price)}</td>
-          <td>${money(product.prices[3]?.price)}</td>
-          <td>${product.permanentIncrease ? "Yes" : "No"}</td>
-          <td>${escapeHtml(product.notes)}</td>
-          <td>
-            <div class="mini-actions">
-              <button type="button" class="edit" onclick="editProduct(${index})">Edit</button>
-              <button type="button" class="danger" onclick="removeProduct(${index})">Remove</button>
-            </div>
-          </td>
-        `;
-
-        body.appendChild(tr);
-      });
-
-      updateSubmissionSummary();
-    }
-
-    function updateSubmissionSummary() {
-      document.getElementById("productCount").textContent = submissionProducts.length;
-    }
-
-    function findExistingSubmissionIndex(itemNo) {
-      return submissionProducts.findIndex(product => String(product.itemNo) === String(itemNo));
-    }
-
-    function editProduct(index) {
-      const product = submissionProducts[index];
-      loadProductIntoForm(product, index);
-
-      document.getElementById("message").textContent =
-        "Product loaded for editing. Make your changes on the left, then click Update Product in Submission.";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function loadProductIntoForm(product, index) {
-      selectedItem = {
-        itemNo: product.itemNo,
-        description: product.description
-      };
-
-      editingIndex = index;
-
-      document.getElementById("descriptionSearch").value = product.description;
-      document.getElementById("itemNo").value = product.itemNo;
-      document.getElementById("bottlesPerCase").value = product.bottlesPerCase;
-      document.getElementById("bpcMessage").textContent = "Loaded from current submission.";
-
-      for (let i = 0; i < 4; i++) {
-        document.getElementById(`price${i}`).value = product.prices[i]?.price || "";
-      }
-
-      document.getElementById("permanentIncrease").checked = !!product.permanentIncrease;
-      document.getElementById("notes").value = product.notes || "";
-
-      document.getElementById("addUpdateBtn").textContent = "Update Product in Submission";
-      suggestionsBox.style.display = "none";
-    }
-
-    function removeProduct(index) {
-      submissionProducts.splice(index, 1);
-      renderSubmissionTable();
-      clearProductForm();
-      document.getElementById("message").textContent = "Product removed.";
-    }
-
-    async function submitAllProducts() {
-      const message = document.getElementById("message");
-
-      if (!submissionProducts.length) {
-        message.textContent = "Please add at least one product to the submission.";
-        return;
-      }
 
       const payload = {
         action: "saveRepSubmission",
@@ -879,9 +590,9 @@
         username: user.username,
         supplier: user.supplier,
         division: user.division,
-        baseMonth: Number(document.getElementById("baseMonth").value),
-        baseYear: Number(document.getElementById("baseYear").value),
-        products: submissionProducts
+        baseMonth,
+        baseYear,
+        products
       };
 
       message.textContent = "Submitting all products...";
@@ -895,146 +606,25 @@
         const result = await res.json();
 
         if (result.success) {
-          message.textContent =
-            `Submission saved. ${result.productCount} product(s) submitted.`;
-
-          submissionProducts = [];
-          renderSubmissionTable();
-          clearProductForm();
+          message.textContent = `Submission saved. ${result.productCount} product(s) submitted.`;
           await loadLatestRepMonthData();
+          renderTable();
         } else {
           message.textContent = result.message || "Submission failed.";
         }
+
       } catch (err) {
         console.error(err);
         message.textContent = "Submission error. Please try again.";
       }
     }
 
-    async function loadLatestRepMonthData() {
-      const username = encodeURIComponent(user.username);
-      const baseMonth = document.getElementById("baseMonth").value;
-      const baseYear = document.getElementById("baseYear").value;
-
-      try {
-        const res = await fetch(
-          `${SCRIPT_URL}?action=getRepLatestMonthData&username=${username}&baseMonth=${baseMonth}&baseYear=${baseYear}`
-        );
-
-        const data = await res.json();
-
-        if (data.success) {
-          latestSavedPricing = data.results || [];
-          renderLatestSavedPricing();
-        }
-      } catch (err) {
-        console.error(err);
+    document.addEventListener("click", function(e) {
+      const box = document.getElementById("suggestions");
+      if (!box.contains(e.target) && e.target.tagName !== "INPUT") {
+        box.style.display = "none";
       }
-    }
-
-    function renderLatestSavedPricing() {
-      const body = document.getElementById("savedPricingBody");
-      const months = buildMonthWindow();
-
-      document.getElementById("savedHead0").textContent = `${monthNames[months[0].month]} ${months[0].year}`;
-      document.getElementById("savedHead1").textContent = `${monthNames[months[1].month]} ${months[1].year}`;
-      document.getElementById("savedHead2").textContent = `${monthNames[months[2].month]} ${months[2].year}`;
-      document.getElementById("savedHead3").textContent = `${monthNames[months[3].month]} ${months[3].year}`;
-
-      body.innerHTML = "";
-
-      if (!latestSavedPricing.length) {
-        body.innerHTML = `
-          <tr>
-            <td colspan="9" class="empty">No saved pricing found for this month.</td>
-          </tr>
-        `;
-        return;
-      }
-
-      latestSavedPricing.forEach(product => {
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-          <td>${escapeHtml(product.itemNo)}</td>
-          <td>${escapeHtml(product.description)}</td>
-          <td>${escapeHtml(product.bpc)}</td>
-          <td>${money(product.prices["Current"]?.price)}</td>
-          <td>${money(product.prices["30 Day"]?.price)}</td>
-          <td>${money(product.prices["60 Day"]?.price)}</td>
-          <td>${money(product.prices["90 Day"]?.price)}</td>
-          <td>${String(product.permanentIncrease).toLowerCase() === "yes" ? "Yes" : "No"}</td>
-          <td>${escapeHtml(product.notes)}</td>
-        `;
-
-        body.appendChild(tr);
-      });
-    }
-
-    function pullLatestSavedPricing() {
-      const message = document.getElementById("message");
-      const months = buildMonthWindow();
-      const priceTypes = ["Current", "30 Day", "60 Day", "90 Day"];
-
-      if (!latestSavedPricing.length) {
-        message.textContent = "No latest saved pricing available to pull.";
-        return;
-      }
-
-      submissionProducts = latestSavedPricing.map(product => {
-        const prices = months.map((m, index) => {
-          const label = priceTypes[index];
-
-          return {
-            priceMonth: m.month,
-            priceYear: m.year,
-            priceType: label,
-            price: product.prices[label]?.price || ""
-          };
-        });
-
-        return {
-          itemNo: product.itemNo,
-          description: product.description,
-          bottlesPerCase: product.bpc,
-          permanentIncrease: String(product.permanentIncrease).toLowerCase() === "yes",
-          notes: product.notes || "",
-          prices
-        };
-      });
-
-      clearProductForm();
-      renderSubmissionTable();
-      message.textContent = "Latest saved pricing pulled into Current Submission. Use Edit on any row to make changes.";
-    }
-
-    function clearPricesOnly() {
-      for (let i = 0; i < 4; i++) {
-        document.getElementById(`price${i}`).value = "";
-      }
-
-      document.getElementById("permanentIncrease").checked = false;
-      document.getElementById("notes").value = "";
-    }
-
-    function clearProductForm() {
-      selectedItem = null;
-      editingIndex = null;
-
-      document.getElementById("descriptionSearch").value = "";
-      document.getElementById("itemNo").value = "";
-      document.getElementById("bottlesPerCase").value = "";
-      document.getElementById("bpcMessage").textContent = "";
-      document.getElementById("addUpdateBtn").textContent = "Add Product to Submission";
-      suggestionsBox.style.display = "none";
-
-      clearPricesOnly();
-    }
-
-    function money(value) {
-      if (value === "" || value === null || value === undefined || isNaN(Number(value))) return "";
-      return `$${Number(value).toFixed(2)}`;
-    }
+    });
 
     function escapeHtml(value) {
       return String(value || "")
@@ -1043,6 +633,10 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value).replaceAll("`", "&#096;");
     }
   </script>
 </body>
