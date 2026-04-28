@@ -1,211 +1,110 @@
+<!-- rep.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Sales Rep Portal</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 30px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-
-    h1 {
-      margin-top: 0;
-      color: #1f2937;
-    }
-
-    label {
-      display: block;
-      margin-top: 18px;
-      font-weight: bold;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-      box-sizing: border-box;
-    }
-
-    input[readonly] {
-      background: #e5e7eb;
-      color: #555;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    button {
-      margin-top: 22px;
-      padding: 13px 18px;
-      background: #1f2937;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #111827;
-    }
-
-    .secondary {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .secondary:hover {
-      background: #d1d5db;
-    }
-
-    .suggestions {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: white;
-      margin-top: 4px;
-      max-height: 220px;
-      overflow-y: auto;
-      display: none;
-      position: relative;
-      z-index: 10;
-    }
-
-    .suggestion {
-      padding: 10px;
-      cursor: pointer;
-      border-bottom: 1px solid #eee;
-    }
-
-    .suggestion:hover {
-      background: #f3f4f6;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .checkbox-row input {
-      width: auto;
-      margin: 0;
-    }
-
-    .message {
-      margin-top: 18px;
-      font-weight: bold;
-    }
-
-    .small {
-      font-size: 14px;
-      color: #666;
-    }
-  </style>
 </head>
-
 <body>
+  <h1>Sales Rep Portal</h1>
+  <p id="welcome"></p>
 
-  <div class="container">
-    <h1>Sales Rep Portal</h1>
-    <p id="welcome"></p>
+  <button onclick="logout()">Logout</button>
 
-    <button class="secondary" onclick="logout()">Logout</button>
+  <hr>
 
-    <form id="repForm">
-      <label>Search Product by Description</label>
-      <input type="text" id="descriptionSearch" autocomplete="off" placeholder="Start typing product description...">
-      <div id="suggestions" class="suggestions"></div>
+  <h2>Add Product Pricing</h2>
 
-      <div class="grid">
-        <div>
-          <label>Item No.</label>
-          <input type="text" id="itemNo" readonly>
-        </div>
+  <label>Search Product by Description</label><br>
+  <input type="text" id="descriptionSearch" placeholder="Start typing description..." autocomplete="off">
+  <div id="suggestions"></div>
 
-        <div>
-          <label>Bottles Per Case</label>
-          <input type="number" id="bottlesPerCase" min="1" required>
-          <p class="small" id="bpcMessage"></p>
-        </div>
-      </div>
+  <br><br>
 
-      <div class="grid">
-        <div>
-          <label>Base Month</label>
-          <select id="baseMonth"></select>
-        </div>
+  <label>Item No.</label><br>
+  <input type="text" id="itemNo" readonly style="background:#e5e7eb;">
 
-        <div>
-          <label>Base Year</label>
-          <input type="number" id="baseYear" readonly>
-        </div>
-      </div>
+  <br><br>
 
-      <h2>Pricing</h2>
+  <label>Bottles Per Case</label><br>
+  <input type="number" id="bottlesPerCase" min="1">
+  <p id="bpcMessage"></p>
 
-      <div class="grid">
-        <div>
-          <label id="priceLabel0">Current Month Price</label>
-          <input type="number" step="0.01" id="price0">
-        </div>
+  <br>
 
-        <div>
-          <label id="priceLabel1">30 Day Price</label>
-          <input type="number" step="0.01" id="price1">
-        </div>
+  <label>Base Month</label><br>
+  <input type="text" id="baseMonthDisplay" readonly style="background:#e5e7eb;">
+  <input type="hidden" id="baseMonth">
 
-        <div>
-          <label id="priceLabel2">60 Day Price</label>
-          <input type="number" step="0.01" id="price2">
-        </div>
+  <br><br>
 
-        <div>
-          <label id="priceLabel3">90 Day Price</label>
-          <input type="number" step="0.01" id="price3">
-        </div>
-      </div>
+  <label>Base Year</label><br>
+  <input type="number" id="baseYear" readonly style="background:#e5e7eb;">
 
-      <div class="checkbox-row">
-        <input type="checkbox" id="permanentIncrease">
-        <label for="permanentIncrease" style="margin:0;">Permanent Price Increase</label>
-      </div>
+  <br><br>
 
-      <label>Notes</label>
-      <textarea id="notes" placeholder="Add any notes about the price change..."></textarea>
+  <h3>Pricing</h3>
 
-      <button type="submit">Save Submission</button>
+  <label id="priceLabel0">Current Month Price</label><br>
+  <input type="number" step="0.01" id="price0">
 
-      <div id="message" class="message"></div>
-    </form>
-  </div>
+  <br><br>
+
+  <label id="priceLabel1">30 Day Price</label><br>
+  <input type="number" step="0.01" id="price1">
+
+  <br><br>
+
+  <label id="priceLabel2">60 Day Price</label><br>
+  <input type="number" step="0.01" id="price2">
+
+  <br><br>
+
+  <label id="priceLabel3">90 Day Price</label><br>
+  <input type="number" step="0.01" id="price3">
+
+  <br><br>
+
+  <label>
+    <input type="checkbox" id="permanentIncrease">
+    Permanent Price Increase
+  </label>
+
+  <br><br>
+
+  <label>Notes</label><br>
+  <textarea id="notes" rows="4" placeholder="Enter notes..."></textarea>
+
+  <br><br>
+
+  <button type="button" onclick="addProductToSubmission()">Add Product to Submission</button>
+
+  <hr>
+
+  <h2>Current Submission</h2>
+
+  <table border="1" cellpadding="8" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Item No.</th>
+        <th>Description</th>
+        <th>BPC</th>
+        <th>Permanent Increase</th>
+        <th>Notes</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody id="submissionBody"></tbody>
+  </table>
+
+  <br>
+
+  <button type="button" onclick="submitAllProducts()">Submit All Products</button>
+
+  <p id="message"></p>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynOIhsyWsCy_utk-_YxTG5jt-gHsYUy45ws_sWH5hcrbsFsZa5mCXstOnDgKs-aZ01_w/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuPzfFEz3yCMqPXlY14gANA0D3R2l4ys3gR2blZFZuXo5N3YQ6O3bBAaLJM5h-NeNg4w/exec";
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -218,14 +117,26 @@
 
     let inventory = [];
     let selectedItem = null;
+    let submissionProducts = [];
 
     const monthNames = [
-      "", "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+      "",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
     ];
 
     window.addEventListener("load", async () => {
-      setupMonthDropdown();
+      setupLockedBaseMonth();
       updatePriceLabels();
       await loadInventory();
     });
@@ -235,29 +146,14 @@
       window.location.href = "index.html";
     }
 
-    function setupMonthDropdown() {
-      const baseMonth = document.getElementById("baseMonth");
+    function setupLockedBaseMonth() {
       const now = new Date();
       const currentMonth = now.getMonth() + 1;
       const currentYear = now.getFullYear();
 
+      document.getElementById("baseMonth").value = currentMonth;
+      document.getElementById("baseMonthDisplay").value = monthNames[currentMonth];
       document.getElementById("baseYear").value = currentYear;
-
-      for (let i = 1; i <= 12; i++) {
-        const option = document.createElement("option");
-        option.value = i;
-        option.textContent = monthNames[i];
-        if (i === currentMonth) option.selected = true;
-        baseMonth.appendChild(option);
-      }
-
-      baseMonth.addEventListener("change", async () => {
-        updatePriceLabels();
-
-        if (selectedItem) {
-          await loadCarryForwardPrices();
-        }
-      });
     }
 
     function buildMonthWindow() {
@@ -283,7 +179,6 @@
 
     function updatePriceLabels() {
       const months = buildMonthWindow();
-
       const types = ["Current Month", "30 Day", "60 Day", "90 Day"];
 
       months.forEach((m, index) => {
@@ -334,13 +229,21 @@
 
       matches.forEach(item => {
         const div = document.createElement("div");
-        div.className = "suggestion";
         div.textContent = `${item.description} — ${item.itemNo}`;
+        div.style.padding = "8px";
+        div.style.cursor = "pointer";
+        div.style.borderBottom = "1px solid #ddd";
+
         div.onclick = () => selectItem(item);
+
         suggestionsBox.appendChild(div);
       });
 
       suggestionsBox.style.display = "block";
+      suggestionsBox.style.border = "1px solid #ccc";
+      suggestionsBox.style.maxHeight = "200px";
+      suggestionsBox.style.overflowY = "auto";
+      suggestionsBox.style.background = "white";
     });
 
     async function selectItem(item) {
@@ -350,7 +253,7 @@
       document.getElementById("itemNo").value = item.itemNo;
       suggestionsBox.style.display = "none";
 
-      clearPrices();
+      clearPricesOnly();
 
       await loadBPC(item.itemNo);
       await loadCarryForwardPrices();
@@ -413,27 +316,16 @@
         });
 
         message.textContent = "Previous pricing loaded where available. All fields remain editable.";
-
       } catch (err) {
         message.textContent = "Previous pricing lookup error.";
       }
     }
 
-    function clearPrices() {
-      for (let i = 0; i < 4; i++) {
-        document.getElementById(`price${i}`).value = "";
-      }
-      document.getElementById("permanentIncrease").checked = false;
-      document.getElementById("notes").value = "";
-    }
-
-    document.getElementById("repForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-
+    function addProductToSubmission() {
       const message = document.getElementById("message");
 
       if (!selectedItem) {
-        message.textContent = "Please select an item from the inventory search.";
+        message.textContent = "Please select an item first.";
         return;
       }
 
@@ -454,10 +346,69 @@
         priceType: priceTypes[index]
       }));
 
-      const hasAtLeastOnePrice = prices.some(p => p.price !== "");
-
-      if (!hasAtLeastOnePrice) {
+      if (!prices.some(p => p.price !== "")) {
         message.textContent = "Please enter at least one price.";
+        return;
+      }
+
+      const alreadyAddedIndex = submissionProducts.findIndex(
+        product => product.itemNo === selectedItem.itemNo
+      );
+
+      const productData = {
+        itemNo: selectedItem.itemNo,
+        description: selectedItem.description,
+        bottlesPerCase,
+        permanentIncrease: document.getElementById("permanentIncrease").checked,
+        notes: document.getElementById("notes").value.trim(),
+        prices
+      };
+
+      if (alreadyAddedIndex >= 0) {
+        submissionProducts[alreadyAddedIndex] = productData;
+        message.textContent = "Product already existed in this submission, so it was updated.";
+      } else {
+        submissionProducts.push(productData);
+        message.textContent = "Product added to current submission.";
+      }
+
+      renderSubmissionTable();
+      clearProductForm();
+    }
+
+    function renderSubmissionTable() {
+      const body = document.getElementById("submissionBody");
+      body.innerHTML = "";
+
+      submissionProducts.forEach((product, index) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${escapeHtml(product.itemNo)}</td>
+          <td>${escapeHtml(product.description)}</td>
+          <td>${escapeHtml(product.bottlesPerCase)}</td>
+          <td>${product.permanentIncrease ? "Yes" : "No"}</td>
+          <td>${escapeHtml(product.notes)}</td>
+          <td>
+            <button type="button" onclick="removeProduct(${index})">Remove</button>
+          </td>
+        `;
+
+        body.appendChild(tr);
+      });
+    }
+
+    function removeProduct(index) {
+      submissionProducts.splice(index, 1);
+      renderSubmissionTable();
+      document.getElementById("message").textContent = "Product removed.";
+    }
+
+    async function submitAllProducts() {
+      const message = document.getElementById("message");
+
+      if (!submissionProducts.length) {
+        message.textContent = "Please add at least one product to the submission.";
         return;
       }
 
@@ -467,17 +418,12 @@
         username: user.username,
         supplier: user.supplier,
         division: user.division,
-        itemNo: selectedItem.itemNo,
-        description: selectedItem.description,
-        bottlesPerCase,
         baseMonth: Number(document.getElementById("baseMonth").value),
         baseYear: Number(document.getElementById("baseYear").value),
-        permanentIncrease: document.getElementById("permanentIncrease").checked,
-        notes: document.getElementById("notes").value.trim(),
-        prices
+        products: submissionProducts
       };
 
-      message.textContent = "Saving submission...";
+      message.textContent = "Submitting all products...";
 
       try {
         const res = await fetch(SCRIPT_URL, {
@@ -488,29 +434,49 @@
         const result = await res.json();
 
         if (result.success) {
-          message.textContent = "Submission saved successfully.";
+          message.textContent =
+            `Submission saved. ${result.productCount} product(s) submitted.`;
 
-          selectedItem = null;
-          document.getElementById("repForm").reset();
-          document.getElementById("baseYear").value = new Date().getFullYear();
-          setupMonthReset();
-          updatePriceLabels();
-
+          submissionProducts = [];
+          renderSubmissionTable();
+          clearProductForm();
         } else {
-          message.textContent = result.message || "Save failed.";
+          message.textContent = result.message || "Submission failed.";
         }
-
       } catch (err) {
         console.error(err);
         message.textContent = "Submission error. Please try again.";
       }
-    });
+    }
 
-    function setupMonthReset() {
-      const currentMonth = new Date().getMonth() + 1;
-      document.getElementById("baseMonth").value = currentMonth;
+    function clearPricesOnly() {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`price${i}`).value = "";
+      }
+
+      document.getElementById("permanentIncrease").checked = false;
+      document.getElementById("notes").value = "";
+    }
+
+    function clearProductForm() {
+      selectedItem = null;
+
+      document.getElementById("descriptionSearch").value = "";
+      document.getElementById("itemNo").value = "";
+      document.getElementById("bottlesPerCase").value = "";
+      document.getElementById("bpcMessage").textContent = "";
+
+      clearPricesOnly();
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
   </script>
-
 </body>
 </html>
