@@ -45,6 +45,26 @@
       padding: 12px;
       background: #f8f8f8;
       border-radius: 10px;
+      display: grid;
+      gap: 8px;
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: normal;
+      margin: 0;
+      padding: 10px 12px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .radio-option input {
+      width: auto;
+      margin: 0;
     }
 
     .option-list label {
@@ -125,36 +145,36 @@
       if (data.suppliers && data.suppliers.length > 0) {
         data.suppliers.forEach(supplier => {
           supplierList.innerHTML += `
-            <label>
+            <label class="radio-option">
               <input type="radio" name="supplier" value="${supplier}">
-              ${supplier}
+              <span>${supplier}</span>
             </label>
           `;
         });
       }
 
       supplierList.innerHTML += `
-        <label>
+        <label class="radio-option">
           <input type="radio" name="supplier" value="Other">
-          Other
+          <span>Other</span>
         </label>
       `;
 
       if (data.divisions && data.divisions.length > 0) {
         data.divisions.forEach(division => {
           divisionList.innerHTML += `
-            <label>
+            <label class="radio-option">
               <input type="radio" name="division" value="${division}">
-              ${division}
+              <span>${division}</span>
             </label>
           `;
         });
       }
 
       divisionList.innerHTML += `
-        <label>
+        <label class="radio-option">
           <input type="radio" name="division" value="Other">
-          Other
+          <span>Other</span>
         </label>
       `;
 
