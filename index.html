@@ -2,7 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Create User | Ups & Downs Product Cost Report</title>
+  <title>Ups & Downs Product Cost Report</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,50 +13,28 @@
     }
 
     .container {
-      max-width: 650px;
+      max-width: 520px;
       margin: auto;
       background: white;
-      padding: 30px;
-      border-radius: 16px;
+      padding: 32px;
+      border-radius: 18px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      text-align: center;
     }
 
     h1 {
-      margin-top: 0;
-      color: #222;
+      margin-bottom: 8px;
+      color: #1f2937;
     }
 
-    label {
-      display: block;
-      margin-top: 18px;
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    .option-list {
-      margin-top: 10px;
-      padding: 12px;
-      background: #f8f8f8;
-      border-radius: 10px;
-    }
-
-    .option-list label {
-      font-weight: normal;
-      margin-top: 8px;
+    p {
+      color: #555;
     }
 
     button {
-      margin-top: 25px;
       width: 100%;
       padding: 14px;
+      margin-top: 14px;
       background: #1f2937;
       color: white;
       border: none;
@@ -68,6 +47,40 @@
       background: #111827;
     }
 
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .secondary:hover {
+      background: #d1d5db;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 18px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
     .message {
       margin-top: 18px;
       font-weight: bold;
@@ -76,145 +89,64 @@
 </head>
 
 <body>
+
   <div class="container">
-    <h1>Create User</h1>
-    <p>Use this form to create an employee or manager profile.</p>
 
-    <form id="userForm">
-      <label>Name</label>
-      <input type="text" id="name" required>
+    <div id="homeScreen" class="screen active">
+      <h1>Ups & Downs Product Cost Report</h1>
+      <p>30-60-90 Day Product Cost Reporting System</p>
 
-      <input type="hidden" id="role" value="Sales Rep">
+      <button onclick="showLogin()">Login</button>
+      <button class="secondary" onclick="window.location.href='create-user.html'">
+        Create User
+      </button>
+    </div>
 
-      <label>Username</label>
-      <input type="text" id="username" required>
+    <div id="loginScreen" class="screen">
+      <h1>Login</h1>
+      <p>Enter your username and password.</p>
 
-      <label>Password</label>
-      <input type="password" id="password" required>
+      <form id="loginForm">
+        <label>Username</label>
+        <input type="text" id="username" required>
 
-      <label>Phone Number</label>
-      <input type="tel" id="phone" required>
+        <label>Password</label>
+        <input type="password" id="password" required>
 
-      <label>Supplier</label>
-      <div id="supplierList" class="option-list"></div>
-      <input type="text" id="otherSupplier" placeholder="Enter other supplier" style="display:none;">
+        <button type="submit">Login</button>
+        <button type="button" class="secondary" onclick="showHome()">Back</button>
 
-      <label>Division</label>
-      <div id="divisionList" class="option-list"></div>
-      <input type="text" id="otherDivision" placeholder="Enter other division" style="display:none;">
+        <div id="message" class="message"></div>
+      </form>
+    </div>
 
-      <button type="submit">Create User</button>
-
-      <div id="message" class="message"></div>
-    </form>
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw72N3YQSrxP_DgeGxsHcUugYCf9nhbTDH4dZ1XCTb2oprfPQ96Obt4n6v1F71MZGy-mw/exec";
+    const SCRIPT_URL = "PASTE_YOUR_SCRIPT_URL_HERE";
 
-    async function loadSuppliersAndDivisions() {
-      const res = await fetch(`${SCRIPT_URL}?action=getSuppliers`);
-      const data = await res.json();
-
-      const supplierList = document.getElementById("supplierList");
-      const divisionList = document.getElementById("divisionList");
-
-      supplierList.innerHTML = "";
-      divisionList.innerHTML = "";
-
-      if (data.suppliers && data.suppliers.length > 0) {
-        data.suppliers.forEach(supplier => {
-          supplierList.innerHTML += `
-            <label>
-              <input type="radio" name="supplier" value="${supplier}">
-              ${supplier}
-            </label>
-          `;
-        });
-      }
-
-      supplierList.innerHTML += `
-        <label>
-          <input type="radio" name="supplier" value="Other">
-          Other
-        </label>
-      `;
-
-      if (data.divisions && data.divisions.length > 0) {
-        data.divisions.forEach(division => {
-          divisionList.innerHTML += `
-            <label>
-              <input type="radio" name="division" value="${division}">
-              ${division}
-            </label>
-          `;
-        });
-      }
-
-      divisionList.innerHTML += `
-        <label>
-          <input type="radio" name="division" value="Other">
-          Other
-        </label>
-      `;
-
-      setupOtherFields();
+    function showLogin() {
+      document.getElementById("homeScreen").classList.remove("active");
+      document.getElementById("loginScreen").classList.add("active");
     }
 
-    function setupOtherFields() {
-      document.querySelectorAll('input[name="supplier"]').forEach(radio => {
-        radio.addEventListener("change", () => {
-          document.getElementById("otherSupplier").style.display =
-            radio.value === "Other" && radio.checked ? "block" : "none";
-        });
-      });
-
-      document.querySelectorAll('input[name="division"]').forEach(radio => {
-        radio.addEventListener("change", () => {
-          document.getElementById("otherDivision").style.display =
-            radio.value === "Other" && radio.checked ? "block" : "none";
-        });
-      });
+    function showHome() {
+      document.getElementById("loginScreen").classList.remove("active");
+      document.getElementById("homeScreen").classList.add("active");
+      document.getElementById("message").textContent = "";
     }
 
-    document.getElementById("userForm").addEventListener("submit", async function(e) {
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
-      const selectedSupplier = document.querySelector('input[name="supplier"]:checked');
-      const selectedDivision = document.querySelector('input[name="division"]:checked');
-
-      if (!selectedSupplier || !selectedDivision) {
-        document.getElementById("message").textContent = "Please select a supplier and division.";
-        return;
-      }
-
-      const supplier =
-        selectedSupplier.value === "Other"
-          ? document.getElementById("otherSupplier").value.trim()
-          : selectedSupplier.value;
-
-      const division =
-        selectedDivision.value === "Other"
-          ? document.getElementById("otherDivision").value.trim()
-          : selectedDivision.value;
-
-      if (!supplier || !division) {
-        document.getElementById("message").textContent = "Please enter supplier and division.";
-        return;
-      }
-
       const payload = {
-        action: "createUser",
-        name: document.getElementById("name").value.trim(),
-        role: document.getElementById("role").value,
+        action: "loginUser",
         username: document.getElementById("username").value.trim(),
-        password: document.getElementById("password").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        supplier,
-        division
+        password: document.getElementById("password").value.trim()
       };
 
-      document.getElementById("message").textContent = "Saving user...";
+      const message = document.getElementById("message");
+      message.textContent = "Checking login...";
 
       try {
         const res = await fetch(SCRIPT_URL, {
@@ -224,21 +156,28 @@
 
         const result = await res.json();
 
-        if (result.success) {
-          document.getElementById("message").textContent = "User created successfully.";
-          document.getElementById("userForm").reset();
-          document.getElementById("otherSupplier").style.display = "none";
-          document.getElementById("otherDivision").style.display = "none";
-          loadSuppliersAndDivisions();
-        } else {
-          document.getElementById("message").textContent = result.message || "Something went wrong.";
+        if (!result.success) {
+          message.textContent = result.message || "Invalid login.";
+          return;
         }
+
+        localStorage.setItem("currentUser", JSON.stringify(result.user));
+
+        const role = String(result.user.role).trim().toLowerCase();
+
+        if (role === "manager") {
+          window.location.href = "manager.html";
+        } else if (role === "sales rep") {
+          window.location.href = "rep.html";
+        } else {
+          message.textContent = "Role not recognized. Please contact manager.";
+        }
+
       } catch (err) {
-        document.getElementById("message").textContent = "Error saving user.";
+        message.textContent = "Login error. Please try again.";
       }
     });
-
-    loadSuppliersAndDivisions();
   </script>
+
 </body>
 </html>
