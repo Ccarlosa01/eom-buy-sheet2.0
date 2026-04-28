@@ -222,6 +222,7 @@
       <input type="text" id="itemFilter" placeholder="Search item no. or description..." oninput="applyFilters()">
 
       <button onclick="loadUpsDowns()">Run Analysis</button>
+      <button onclick="downloadAnalysisExcel()">Download Table to Excel</button>
 
       <div id="analysisMessage" class="message">Choose a month and run the analysis.</div>
 
@@ -513,6 +514,55 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+    }
+
+    function downloadAnalysisExcel() {
+      const rep = document.getElementById("repFilter").value;
+      const supplier = document.getElementById("supplierFilter").value;
+      const itemSearch = document.getElementById("itemFilter").value.trim().toLowerCase();
+    
+      const filtered = analysisResults.filter(row => {
+        const matchesRep = !rep || row.repName === rep;
+        const matchesSupplier = !supplier || row.supplier === supplier;
+        const itemText = `${row.itemNo} ${row.description}`.toLowerCase();
+        const matchesItem = !itemSearch || itemText.includes(itemSearch);
+        return matchesRep && matchesSupplier && matchesItem;
+      });
+    
+      if (!filtered.length) {
+        document.getElementById("analysisMessage").textContent = "No table data available to download.";
+        return;
+      }
+    
+      const exportRows = filtered.map(row => ({
+        "Rep": row.repName,
+        "Supplier": row.supplier,
+        "Division": row.division,
+        "Item No.": row.itemNo,
+        "Description": row.description,
+        "BPC": row.bpc,
+        "Base Price": row.basePrice,
+        "30 Day Price": row.price30,
+        "30 Day Difference": row.diff30,
+        "60 Day Price": row.price60,
+        "60 Day Difference": row.diff60,
+        "90 Day Price": row.price90,
+        "90 Day Difference": row.diff90,
+        "Permanent Increase": row.permanentIncrease,
+        "Suggested Period Buy": row.suggestedBuy,
+        "Notes": row.notes
+      }));
+    
+      const worksheet = XLSX.utils.json_to_sheet(exportRows);
+      const workbook = XLSX.utils.book_new();
+    
+      XLSX.utils.book_append_sheet(workbook, worksheet, "UpsDowns Analysis");
+    
+      const month = document.getElementById("reportMonth").value;
+      const year = document.getElementById("reportYear").value;
+      const monthName = monthNames[Number(month)];
+    
+      XLSX.writeFile(workbook, `UpsDowns_${monthName}_${year}.xlsx`);
     }
   </script>
 </body>
