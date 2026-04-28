@@ -418,12 +418,40 @@
           </div>
         </div>
       </div>
+      
+      <div class="card">
+        <h2>Latest Saved Pricing for This Month</h2>
+        <p class="muted">This shows your most recent saved pricing for the current reporting month.</p>
+      
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item No.</th>
+                <th>Description</th>
+                <th>BPC</th>
+                <th id="savedHead0">Current</th>
+                <th id="savedHead1">30 Day</th>
+                <th id="savedHead2">60 Day</th>
+                <th id="savedHead3">90 Day</th>
+                <th>Permanent</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="savedPricingBody">
+              <tr>
+                <td colspan="9" class="empty">No saved pricing loaded yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2Ci1tybNjQykngvcvWdppYAdnPhj6ukfdKUSTJARS1ER7Vp0XcjUFOSe-fq4GE1QFMg/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2RlItMOrAQbF1wEU9HMEGnl1OZ_Qrxe2fmfc0ne2TqezoFPXZ8k7-1yl0l1yC1VjyLw/exec";
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -459,6 +487,7 @@
       updatePriceLabels();
       updateSubmissionSummary();
       await loadInventory();
+      await loadLatestRepMonthData();
     });
 
     function logout() {
@@ -773,6 +802,7 @@
           submissionProducts = [];
           renderSubmissionTable();
           clearProductForm();
+          await loadLatestRepMonthData();
         } else {
           message.textContent = result.message || "Submission failed.";
         }
@@ -810,6 +840,73 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+    }
+
+    let latestSavedPricing = [];
+
+    async function loadLatestRepMonthData() {
+      const username = encodeURIComponent(user.username);
+      const baseMonth = document.getElementById("baseMonth").value;
+      const baseYear = document.getElementById("baseYear").value;
+    
+      try {
+        const res = await fetch(
+          `${SCRIPT_URL}?action=getRepLatestMonthData&username=${username}&baseMonth=${baseMonth}&baseYear=${baseYear}`
+        );
+    
+        const data = await res.json();
+    
+        if (data.success) {
+          latestSavedPricing = data.results || [];
+          renderLatestSavedPricing();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    
+    function renderLatestSavedPricing() {
+      const body = document.getElementById("savedPricingBody");
+      const months = buildMonthWindow();
+    
+      document.getElementById("savedHead0").textContent = `${monthNames[months[0].month]} ${months[0].year}`;
+      document.getElementById("savedHead1").textContent = `${monthNames[months[1].month]} ${months[1].year}`;
+      document.getElementById("savedHead2").textContent = `${monthNames[months[2].month]} ${months[2].year}`;
+      document.getElementById("savedHead3").textContent = `${monthNames[months[3].month]} ${months[3].year}`;
+    
+      body.innerHTML = "";
+    
+      if (!latestSavedPricing.length) {
+        body.innerHTML = `
+          <tr>
+            <td colspan="9" class="empty">No saved pricing found for this month.</td>
+          </tr>
+        `;
+        return;
+      }
+    
+      latestSavedPricing.forEach(product => {
+        const tr = document.createElement("tr");
+    
+        tr.innerHTML = `
+          <td>${escapeHtml(product.itemNo)}</td>
+          <td>${escapeHtml(product.description)}</td>
+          <td>${escapeHtml(product.bpc)}</td>
+          <td>${money(product.prices["Current"]?.price)}</td>
+          <td>${money(product.prices["30 Day"]?.price)}</td>
+          <td>${money(product.prices["60 Day"]?.price)}</td>
+          <td>${money(product.prices["90 Day"]?.price)}</td>
+          <td>${product.permanentIncrease === "Yes" ? "Yes" : "No"}</td>
+          <td>${escapeHtml(product.notes)}</td>
+        `;
+    
+        body.appendChild(tr);
+      });
+    }
+    
+    function money(value) {
+      if (value === "" || value === null || value === undefined || isNaN(Number(value))) return "";
+      return `$${Number(value).toFixed(2)}`;
     }
   </script>
 </body>
