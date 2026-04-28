@@ -607,8 +607,6 @@
 
         if (result.success) {
           message.textContent = `Submission saved. ${result.productCount} product(s) submitted.`;
-          await loadLatestRepMonthData();
-          renderTable();
         } else {
           message.textContent = result.message || "Submission failed.";
         }
