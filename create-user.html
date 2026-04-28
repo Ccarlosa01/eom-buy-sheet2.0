@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Create User | Ups & Downs Product Cost Report</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #222;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .option-list {
+      margin-top: 10px;
+      padding: 12px;
+      background: #f8f8f8;
+      border-radius: 10px;
+    }
+
+    .option-list label {
+      font-weight: normal;
+      margin-top: 8px;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      background: #1f2937;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #111827;
+    }
+
+    .message {
+      margin-top: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Create User</h1>
+    <p>Use this form to create an employee or manager profile.</p>
+
+    <form id="userForm">
+      <label>Name</label>
+      <input type="text" id="name" required>
+
+      <input type="hidden" id="role" value="Sales Rep">
+
+      <label>Username</label>
+      <input type="text" id="username" required>
+
+      <label>Password</label>
+      <input type="password" id="password" required>
+
+      <label>Phone Number</label>
+      <input type="tel" id="phone" required>
+
+      <label>Supplier</label>
+      <div id="supplierList" class="option-list"></div>
+      <input type="text" id="otherSupplier" placeholder="Enter other supplier" style="display:none;">
+
+      <label>Division</label>
+      <div id="divisionList" class="option-list"></div>
+      <input type="text" id="otherDivision" placeholder="Enter other division" style="display:none;">
+
+      <button type="submit">Create User</button>
+
+      <div id="message" class="message"></div>
+    </form>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw72N3YQSrxP_DgeGxsHcUugYCf9nhbTDH4dZ1XCTb2oprfPQ96Obt4n6v1F71MZGy-mw/exec";
+
+    async function loadSuppliersAndDivisions() {
+      const res = await fetch(`${SCRIPT_URL}?action=getSuppliers`);
+      const data = await res.json();
+
+      const supplierList = document.getElementById("supplierList");
+      const divisionList = document.getElementById("divisionList");
+
+      supplierList.innerHTML = "";
+      divisionList.innerHTML = "";
+
+      if (data.suppliers && data.suppliers.length > 0) {
+        data.suppliers.forEach(supplier => {
+          supplierList.innerHTML += `
+            <label>
+              <input type="radio" name="supplier" value="${supplier}">
+              ${supplier}
+            </label>
+          `;
+        });
+      }
+
+      supplierList.innerHTML += `
+        <label>
+          <input type="radio" name="supplier" value="Other">
+          Other
+        </label>
+      `;
+
+      if (data.divisions && data.divisions.length > 0) {
+        data.divisions.forEach(division => {
+          divisionList.innerHTML += `
+            <label>
+              <input type="radio" name="division" value="${division}">
+              ${division}
+            </label>
+          `;
+        });
+      }
+
+      divisionList.innerHTML += `
+        <label>
+          <input type="radio" name="division" value="Other">
+          Other
+        </label>
+      `;
+
+      setupOtherFields();
+    }
+
+    function setupOtherFields() {
+      document.querySelectorAll('input[name="supplier"]').forEach(radio => {
+        radio.addEventListener("change", () => {
+          document.getElementById("otherSupplier").style.display =
+            radio.value === "Other" && radio.checked ? "block" : "none";
+        });
+      });
+
+      document.querySelectorAll('input[name="division"]').forEach(radio => {
+        radio.addEventListener("change", () => {
+          document.getElementById("otherDivision").style.display =
+            radio.value === "Other" && radio.checked ? "block" : "none";
+        });
+      });
+    }
+
+    document.getElementById("userForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const selectedSupplier = document.querySelector('input[name="supplier"]:checked');
+      const selectedDivision = document.querySelector('input[name="division"]:checked');
+
+      if (!selectedSupplier || !selectedDivision) {
+        document.getElementById("message").textContent = "Please select a supplier and division.";
+        return;
+      }
+
+      const supplier =
+        selectedSupplier.value === "Other"
+          ? document.getElementById("otherSupplier").value.trim()
+          : selectedSupplier.value;
+
+      const division =
+        selectedDivision.value === "Other"
+          ? document.getElementById("otherDivision").value.trim()
+          : selectedDivision.value;
+
+      if (!supplier || !division) {
+        document.getElementById("message").textContent = "Please enter supplier and division.";
+        return;
+      }
+
+      const payload = {
+        action: "createUser",
+        name: document.getElementById("name").value.trim(),
+        role: document.getElementById("role").value,
+        username: document.getElementById("username").value.trim(),
+        password: document.getElementById("password").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        supplier,
+        division
+      };
+
+      document.getElementById("message").textContent = "Saving user...";
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          document.getElementById("message").textContent = "User created successfully.";
+          document.getElementById("userForm").reset();
+          document.getElementById("otherSupplier").style.display = "none";
+          document.getElementById("otherDivision").style.display = "none";
+          loadSuppliersAndDivisions();
+        } else {
+          document.getElementById("message").textContent = result.message || "Something went wrong.";
+        }
+      } catch (err) {
+        document.getElementById("message").textContent = "Error saving user.";
+      }
+    });
+
+    loadSuppliersAndDivisions();
+  </script>
+</body>
+</html>
